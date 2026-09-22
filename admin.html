@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Administration – SUP'BASKET</title>
+  <link rel="icon" href="assets/images/logo-supbasket.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/admin.css" />
+</head>
+<body>
+  <div id="loginScreen" class="login-overlay">
+    <div class="login-box">
+      <img src="assets/images/logo-supbasket.png" alt="SUP'BASKET" class="login-logo" />
+      <h1>SUP'BASKET</h1>
+      <p class="login-sub">Administration</p>
+      <form id="loginForm">
+        <input type="password" id="adminPassword" placeholder="Mot de passe" required autocomplete="current-password" />
+        <button type="submit" class="btn">Se connecter</button>
+        <p id="loginError" class="error" hidden>Mot de passe incorrect.</p>
+      </form>
+    </div>
+  </div>
+
+  <div id="adminContent" class="admin-wrap" hidden>
+    <header class="admin-header">
+      <div class="admin-brand">
+        <img src="assets/images/logo-supbasket.png" alt="" />
+        <h1>Administration SUP'BASKET</h1>
+      </div>
+      <div class="admin-header-actions">
+        <button type="button" id="btnLogout" class="btn btn-ghost">Déconnexion</button>
+        <a href="/" class="back-link">← Site public</a>
+      </div>
+    </header>
+
+    <nav class="admin-tabs">
+      <button type="button" class="tab-btn active" data-tab="messages">Messages</button>
+      <button type="button" class="tab-btn" data-tab="players">Effectif</button>
+      <button type="button" class="tab-btn" data-tab="matches">Matchs</button>
+      <button type="button" class="tab-btn" data-tab="photos">Photos</button>
+      <button type="button" class="tab-btn" data-tab="settings">Paramètres</button>
+    </nav>
+
+    <section id="tab-messages" class="admin-tab-panel active">
+      <h2>Messages de contact</h2>
+      <div id="messagesList" class="admin-list">Chargement…</div>
+    </section>
+
+    <section id="tab-players" class="admin-tab-panel">
+      <h2>Effectif</h2>
+      <form id="formPlayer" class="admin-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="pName">Nom *</label>
+            <input type="text" id="pName" name="name" required />
+          </div>
+          <div class="form-group">
+            <label for="pNumber">Numéro</label>
+            <input type="number" id="pNumber" name="number" min="0" max="99" />
+          </div>
+          <div class="form-group">
+            <label for="pPosition">Poste</label>
+            <input type="text" id="pPosition" name="position" placeholder="Meneur, Ailier…" />
+          </div>
+          <div class="form-group">
+            <label for="pPhoto">Photo</label>
+            <input type="file" id="pPhoto" name="photo" accept="image/jpeg,image/png,image/webp,image/gif" />
+          </div>
+          <div class="form-group full">
+            <label for="pBio">Bio</label>
+            <textarea id="pBio" name="bio" rows="2"></textarea>
+          </div>
+        </div>
+        <button type="submit" class="btn">Ajouter le joueur</button>
+        <p id="statusPlayer" class="form-status"></p>
+      </form>
+      <div id="playersList" class="admin-list">Chargement…</div>
+    </section>
+
+    <section id="tab-matches" class="admin-tab-panel">
+      <h2>Matchs</h2>
+      <form id="formMatch" class="admin-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="mOpponent">Adversaire *</label>
+            <input type="text" id="mOpponent" name="opponent" required />
+          </div>
+          <div class="form-group">
+            <label for="mDate">Date</label>
+            <input type="datetime-local" id="mDate" name="match_date" />
+          </div>
+          <div class="form-group">
+            <label for="mLocation">Lieu</label>
+            <input type="text" id="mLocation" name="location" />
+          </div>
+          <div class="form-group">
+            <label for="mHomeAway">Domicile / Extérieur</label>
+            <select id="mHomeAway" name="home_away">
+              <option value="home">Domicile</option>
+              <option value="away">Extérieur</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="mResult">Résultat</label>
+            <input type="text" id="mResult" name="result" placeholder="ex: 72-68" />
+          </div>
+          <div class="form-group full">
+            <label for="mNotes">Notes</label>
+            <textarea id="mNotes" name="notes" rows="2"></textarea>
+          </div>
+        </div>
+        <button type="submit" class="btn">Ajouter le match</button>
+        <p id="statusMatch" class="form-status"></p>
+      </form>
+      <div id="matchesList" class="admin-list">Chargement…</div>
+    </section>
+
+    <section id="tab-photos" class="admin-tab-panel">
+      <h2>Galerie</h2>
+      <div class="admin-form">
+        <div class="form-group">
+          <label for="galleryPhotosInput">Ajouter des photos</label>
+          <input type="file" id="galleryPhotosInput" accept="image/jpeg,image/png,image/webp,image/gif" multiple />
+        </div>
+        <button type="button" id="btnUploadGallery" class="btn">Uploader</button>
+        <p id="statusGallery" class="form-status"></p>
+      </div>
+      <div id="galleryAdminList" class="gallery-admin-grid"></div>
+    </section>
+
+    <section id="tab-settings" class="admin-tab-panel">
+      <h2>Paramètres du site</h2>
+      <form id="formSettings" class="admin-form">
+        <div class="form-grid">
+          <div class="form-group full">
+            <label for="setHero">Accroche hero</label>
+            <input type="text" id="setHero" name="hero_tagline" />
+          </div>
+          <div class="form-group full">
+            <label for="setAboutTitle">Titre « Le club »</label>
+            <input type="text" id="setAboutTitle" name="about_title" />
+          </div>
+          <div class="form-group full">
+            <label for="setAboutText">Texte « Le club »</label>
+            <textarea id="setAboutText" name="about_text" rows="3"></textarea>
+          </div>
+          <div class="form-group full">
+            <label for="setRosterIntro">Intro effectif</label>
+            <textarea id="setRosterIntro" name="roster_intro" rows="2"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="setEmail">Email</label>
+            <input type="email" id="setEmail" name="email" />
+          </div>
+          <div class="form-group">
+            <label for="setPhone">Téléphone (affichage)</label>
+            <input type="text" id="setPhone" name="phone_display" />
+          </div>
+          <div class="form-group">
+            <label for="setPhoneHref">Lien téléphone</label>
+            <input type="text" id="setPhoneHref" name="phone_href" placeholder="tel:+216…" />
+          </div>
+          <div class="form-group">
+            <label for="setAddress">Adresse</label>
+            <input type="text" id="setAddress" name="address" />
+          </div>
+          <div class="form-group">
+            <label for="setInstagram">Instagram (URL)</label>
+            <input type="url" id="setInstagram" name="instagram" />
+          </div>
+          <div class="form-group">
+            <label for="setFacebook">Facebook (URL)</label>
+            <input type="url" id="setFacebook" name="facebook" />
+          </div>
+        </div>
+        <button type="submit" class="btn">Enregistrer</button>
+        <p id="statusSettings" class="form-status"></p>
+      </form>
+
+      <h2 class="mt">Changer le mot de passe</h2>
+      <form id="formPassword" class="admin-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="pwCurrent">Mot de passe actuel</label>
+            <input type="password" id="pwCurrent" required autocomplete="current-password" />
+          </div>
+          <div class="form-group">
+            <label for="pwNew">Nouveau mot de passe</label>
+            <input type="password" id="pwNew" required minlength="8" autocomplete="new-password" />
+          </div>
+        </div>
+        <button type="submit" class="btn">Mettre à jour</button>
+        <p id="statusPassword" class="form-status"></p>
+      </form>
+    </section>
+  </div>
+
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>
